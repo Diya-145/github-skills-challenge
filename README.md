@@ -125,3 +125,12 @@ The complete corrected flow is:
 
 Anomaly Detector -> Event -> Producer -> service-events Topic -> Consumer -> AIOps Output
 -------------------------TASK 5 COMPLETED----------------------
+
+------------------------TASK 6-------------------
+
+The complete AIOps pipeline was executed using:
+
+```bash
+PYTHONPATH=src python3 aiops_pipeline.py
+
+-------------------------TASK 6 COMPLETED----------------------
