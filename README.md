@@ -58,3 +58,28 @@ The observation at 10:06 is also unusual and more severe. It has a response time
 These two observations suggest a temporary performance problem followed by high resource utilisation and a database connection problem.
 
 ---------------------TASK 2 COMPLETED-------------------
+
+-------------------------TASK 3-------------------------
+
+The provided `AnomalyDetector` was used to analyse all 10 operational records.
+The detector checks:
+- Response time above 500 ms
+- CPU usage above 80%
+- Memory usage above 80%
+- Log level equal to `ERROR`
+
+=> Detected Anomalies
+| Timestamp | Metrics and Log Information | Detection Reasons |
+|---|---|---|
+| 2026-09-20T10:05:00 | Response time: 610 ms; log level: ERROR; message: Payment service timeout | High response time; Error log detected |
+| 2026-09-20T10:06:00 | Response time: 640 ms; CPU: 94%; memory: 91%; log level: ERROR; message: Database connection timeout | High response time; High CPU utilization; High memory utilization; Error log detected |
+The detector classified 8 records as normal and 2 records as anomalous. The normal records had response times between 120 ms and 150 ms, CPU usage between 42% and 50%, memory usage between 51% and 57%, and successful `INFO` messages.
+No expected anomalies were missed, and no normal observations were incorrectly flagged.
+Each anomaly includes the timestamp, service name, detection reasons, and original source record. This provides enough information to understand why the observation was flagged.
+
+=> Detection Limitation
+The detector uses fixed thresholds. It may not detect gradual changes in normal behaviour or adapt to different service baselines. A possible improvement would be to calculate a baseline from historical data and detect significant deviations from that baseline.
+
+-----------------------------TASK 3 COMPLETED--------------------------
+
+---------------------------TASK 4-----------------------------
