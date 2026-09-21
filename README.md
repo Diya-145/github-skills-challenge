@@ -83,3 +83,22 @@ The detector uses fixed thresholds. It may not detect gradual changes in normal 
 -----------------------------TASK 3 COMPLETED--------------------------
 
 ---------------------------TASK 4-----------------------------
+
+The AIOps event flow was verified using the provided pipeline.
+The anomaly detector identified two anomalies at:
+- `2026-09-20T10:05:00`
+- `2026-09-20T10:06:00`
+Each detected anomaly was passed to the `EventProducer`. The producer published the event to the in-memory `service-events` topic. The `EventConsumer` was connected to that same topic and received both events.
+The consumer returned the events to `run_pipeline()`, which passed them to the final AIOps output. The execution result was:
+
+- Records processed: 10
+- Anomalies detected: 2
+- Events consumed: 2
+
+The event flow was:
+
+Anomaly Detector -> Event -> Producer -> service-events Topic -> Consumer -> AIOps Output
+
+The producer publishes messages, the topic stores messages in memory, the consumer retrieves messages, and the pipeline displays the processed events.
+
+-----------------------TASK 4 COMPLETED--------------------
