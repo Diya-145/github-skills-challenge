@@ -126,11 +126,71 @@ The complete corrected flow is:
 Anomaly Detector -> Event -> Producer -> service-events Topic -> Consumer -> AIOps Output
 -------------------------TASK 5 COMPLETED----------------------
 
+
 ------------------------TASK 6-------------------
 
 The complete AIOps pipeline was executed using:
 
 ```bash
-PYTHONPATH=src python3 aiops_pipeline.py
+PYTHONPATH=src python3 src/aiops_pipeline.py
+```
 
--------------------------TASK 6 COMPLETED----------------------
+Execution result:
+
+- Operational records processed: 10
+- Anomalies detected: 2
+- Events published: 2
+- Events consumed: 2
+- Events processed successfully: 2
+
+The detected issues occurred at:
+
+- `2026-09-20T10:05:00`: payment service timeout, high response time, and `ERROR` log
+- `2026-09-20T10:06:00`: database connection timeout, high response time, high CPU, high memory, and `ERROR` log
+
+The verified end-to-end flow was:
+
+Operational Data -> Anomaly Detection -> Event -> Producer -> Topic -> Consumer -> AIOps Output
+
+The final output successfully represented the detected operational issues.
+
+-------------------------TASK 6 COMPLETED--------------------------
+
+-------------------------TASK 7-------------------------
+
+=> Reproduction Steps
+
+1. Clone or fork the repository.
+2. Open the repository in GitHub Codespaces or VS Code.
+3. Install the dependencies:
+
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+4. Run the complete AIOps pipeline:
+
+   ```bash
+   PYTHONPATH=src python3 src/aiops_pipeline.py
+   ```
+
+5. Run the tests:
+
+   ```bash
+   PYTHONPATH=src python3 -m pytest
+   ```
+
+6. Confirm that 10 records are processed, 2 anomalies are detected, and 2 events are consumed.
+
+The project monitors a simulated `payment-service`. AIOps analyses its metrics and logs, detects abnormal behaviour, creates anomaly events, publishes them to an in-memory topic, consumes them, and displays the final result.
+The main operational data is stored in `data/service_data.json`. Metrics include response time, CPU usage, and memory usage. Log information includes the log level and message. The timestamps are recorded at one-minute intervals and allow metric and log activity to be correlated.
+
+The normal records contain successful `INFO` messages and low response time, CPU, and memory values. The unusual records occur at 10:05 and 10:06 and contain timeout errors, high response times, and, at 10:06, high CPU and memory usage.
+
+The anomaly detector identified both expected anomalies and did not incorrectly flag any normal records. The event flow uses the `EventProducer` to publish events, the `EventTopic` to store them, and the `EventConsumer` to retrieve them for the final AIOps output.
+
+Two issues were corrected during the investigation. The detector was changed to recognise `ERROR` log entries because the supplied data did not use `WARNING`. The consumer was connected to the same topic used by the producer, so the anomaly events could travel through the complete workflow.
+
+One limitation is that the detector uses fixed thresholds. It may not adapt to changing service baselines. A possible improvement would be to calculate historical baselines and detect significant deviations from them.
+
+-------------------------TASK 7 COMPLETED--------------------------
