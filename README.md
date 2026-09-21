@@ -102,3 +102,26 @@ Anomaly Detector -> Event -> Producer -> service-events Topic -> Consumer -> AIO
 The producer publishes messages, the topic stores messages in memory, the consumer retrieves messages, and the pipeline displays the processed events.
 
 -----------------------TASK 4 COMPLETED--------------------
+
+-----------------------TASK 5--------------------------
+
+Two workflow issues were identified and corrected.
+
+=> Issue 1: Error log detection
+
+The anomaly detector originally checked for `WARNING` log entries, but the provided operational data uses `ERROR` for the timeout records. The affected component was `src/anomaly_detector.py`.
+The condition was corrected to detect `ERROR` log levels. After the correction, the records at 10:05 and 10:06 were identified with the reason `Error log detected`.
+
+=> Issue 2: Producer and consumer topics
+
+The producer published events to the `service-events` topic, while the
+consumer was connected to a separate `anomaly-events` topic. Because the topics were separate in-memory objects, the consumer received zero events.
+The affected component was `src/aiops_pipeline.py`. The consumer was corrected to use the same `producer_topic` as the producer.
+After the correction, the workflow produced:
+- Records processed: 10
+- Anomalies detected: 2
+- Events consumed: 2
+The complete corrected flow is:
+
+Anomaly Detector -> Event -> Producer -> service-events Topic -> Consumer -> AIOps Output
+-------------------------TASK 5 COMPLETED----------------------
