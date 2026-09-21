@@ -194,3 +194,12 @@ Two issues were corrected during the investigation. The detector was changed to 
 One limitation is that the detector uses fixed thresholds. It may not adapt to changing service baselines. A possible improvement would be to calculate historical baselines and detect significant deviations from them.
 
 -------------------------TASK 7 COMPLETED--------------------------
+
+-------------------------TASK 8-------------------------
+
+The provided validation was executed with:
+
+```bash
+PYTHONPATH=src python3 -m pytest
+
+-------------------TASK 8 Completed------------------
